@@ -7,8 +7,8 @@ import csv
 import pandas as pd
 
 file_paths = {
-    "nasdaq-daily-history": "nasdaq-1971Feb-2021Jan.csv",
-    "daily_change": "daily-change-1971Feb-2021Jan.csv"
+    "daily_change": "data/daily-change-1971Feb-2021Jan.csv",
+    "daily_data": "data/nasdaq-1971Feb-2021Jan.csv"
 }
 
 
@@ -21,7 +21,7 @@ def daily_change():
                # "Open","High","Low","Close","Volume",
                "Change"]
     # Read from csv file
-    in_df = pd.read_csv(file_paths["nasdaq-daily-history"])
+    in_df = pd.read_csv(file_paths["daily_data"])
 
     # Get daily change
     change_list = []
