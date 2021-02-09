@@ -8,7 +8,8 @@ import pandas as pd
 
 file_paths = {
     "daily_change": "data/daily-change-1971Feb-2021Jan.csv",
-    "daily_data": "data/nasdaq-1971Feb-2021Jan.csv"
+    "daily_data": "data/nasdaq-1971Feb-2021Jan.csv",
+    "monthly_absolute_change": "data/results/monthly_absolute_change_2per.csv"
 }
 
 
@@ -46,6 +47,29 @@ def daily_change():
                   index=False)
 
 
+def monthly_absolute_change_count(change):
+    """
+    Returns the number of days in a month that the index has make a daily value change above change input
+    in absolute numbers
+    """
+    df_in = pd.read_csv(file_paths["daily_change"])
+    df_out = {}  # month-year: number of days
+
+    monthly_count = 0
+
+    for i in range(len(df_in["Change"])):
+        if abs(df_in["Change"][i]) > change:
+            monthly_count += 1
+
+        if i != len(df_in["Date"])-1 and df_in["Date"][i][0:7] != df_in["Date"][i+1][0:7]:
+            df_out[df_in["Date"][i][2:7]] = monthly_count
+            monthly_count = 0
+
+    with open(file_paths["monthly_absolute_change"], 'w+', newline='') as f:
+        w = csv.writer(f)
+        w.writerows(df_out.items())
+
+
 def volume_change():
     """
     Volume change (to be decided)
@@ -61,7 +85,8 @@ def after_hours():
 
 
 def main():
-    daily_change()
+    # daily_change()
+    monthly_absolute_change_count(2)
 
 
 if __name__ == "__main__":
