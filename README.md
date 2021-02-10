@@ -4,6 +4,6 @@
 <img
 src="long-trend/graphs/final_1.png"
 raw=true
-alt="Subject Pronouns"
+alt="Dot Com Analysis"
 style="margin-right: 10px;"
 />
