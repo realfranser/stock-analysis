@@ -5,18 +5,20 @@ raw stock information
 
 import csv
 import pandas as pd
+import statistics
 
 file_paths = {
     "daily_change": "data/daily-change-1971Feb-2021Jan.csv",
     "daily_data": "data/nasdaq-1971Feb-2021Jan.csv",
-    "monthly_absolute_change": "data/results/monthly_absolute_change_2per.csv"
+    "monthly_absolute_change": "data/results/monthly_absolute_change_2per.csv",
+    "monthly_volume": "data/results/monthly_volume.csv"
 }
 
 
 def daily_change():
     """
     Extracts daily info from nasdaq datafile and creates a new datafile with
-    daily info with the following columns date, change, volume 
+    daily info with the following columns date, change, volume
     """
     columns = ["Date",
                # "Open","High","Low","Close","Volume",
@@ -72,9 +74,28 @@ def monthly_absolute_change_count(change):
 
 def volume_change():
     """
-    Volume change (to be decided)
+    Writes in the monthly volume file the total volume traded in a month
     """
-    pass
+    df_in = pd.read_csv(file_paths["daily_data"])
+    df_out = {}  # Date: perc_vol_change
+    monthly_volume = 0
+
+    for index in range(len(df_in["Volume"])):
+
+        date = df_in["Date"][index][0:7]
+        volume = df_in["Volume"][index]
+        monthly_volume += volume
+
+        if index+1 == len(df_in["Volume"]):
+            df_out[date] = monthly_volume
+
+        elif date != df_in["Date"][index+1][0:7]:
+            df_out[date] = monthly_volume
+            monthly_volume = 0
+
+    with open(file_paths["monthly_volume"], 'w+', newline='') as f:
+        w = csv.writer(f)
+        w.writerows(df_out.items())
 
 
 def after_hours():
@@ -86,7 +107,8 @@ def after_hours():
 
 def main():
     # daily_change()
-    monthly_absolute_change_count(2)
+    # monthly_absolute_change_count(2)
+    volume_change()
 
 
 if __name__ == "__main__":
