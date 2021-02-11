@@ -1,6 +1,4 @@
-# stock-analysis
-
-## Nasdaq (^IXIC) since Feb 1971 to Feb 2021
+# Nasdaq (^IXIC) since Feb 1971 to Feb 2021
 
 ### Nasdaq daily close price VS Volume VS custom VIX
 <img
